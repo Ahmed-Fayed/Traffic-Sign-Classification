@@ -15,6 +15,8 @@ import cv2
 import os
 
 from sklearn.model_selection import train_test_split
+# from sklearn.preprocessing import StandardScaler
+
 from keras.utils import to_categorical
 
 
@@ -34,7 +36,7 @@ train_path = 'E:/Software/Practise Projects/Traffic Sign Classification/Train/'
 classes_num = os.listdir(train_path)
 
 
-for num in classes_num:
+for num in range(len(classes_num)):
     class_dir = train_path + str(num)
     class_images = os.listdir(class_dir)
     
@@ -50,6 +52,32 @@ for num in classes_num:
 dim1_mean = np.mean(dim1)
 dim2_mean = np.mean(dim2)
     
+
+# Resizing images to the average of the dimensions
+# Normalizing Images
+Images_data = []
+Labels = []
+#norm_obj = StandardScaler(copy=True, with_mean=True, with_std=True)
+
+for num in range(len(classes_num)):
+    class_dir = train_path + str(num)
+    class_images = os.listdir(class_dir)
+    
+    for img_name in class_images:
+        img_path = os.path.join(class_dir + '/', img_name)
+        
+        img = cv2.imread(img_path)
+        img = cv2.resize(img, (50, 50))
+        
+        # Normalizing Image
+        img = img / 255
+        
+        Images_data.append(img)
+        Labels.append(num)
+        
+        
+        
+        
 
 
 
