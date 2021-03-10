@@ -76,13 +76,16 @@ for num in range(len(classes_num)):
         Labels.append(num)
         
         
-        
-        
+  
+# number of images per class      
+label_counts = pd.DataFrame(Labels).value_counts()
 
+# spliiting data
+X_train, X_test, Y_train, Y_test = train_test_split(Images_data, Labels, test_size=0.2, shuffle=True)
 
-
-
-
+# making one hot encodding
+Y_train = to_categorical(Y_train)
+Y_test = to_categorical(Y_test)
 
 
 
