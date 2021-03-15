@@ -18,7 +18,8 @@ from sklearn.model_selection import train_test_split
 # from sklearn.preprocessing import StandardScaler
 
 from keras.utils import to_categorical
-
+from keras.models import Sequential
+from keras.layers import Dense, Conv2D, MaxPool2D, Flatten
 
 
 
@@ -81,16 +82,44 @@ for num in range(len(classes_num)):
 label_counts = pd.DataFrame(Labels).value_counts()
 
 # spliiting data
-X_train, X_test, Y_train, Y_test = train_test_split(Images_data, Labels, test_size=0.2, shuffle=True)
+Images_data = np.array(Images_data)
+X_train, X_val, Y_train, Y_val = train_test_split(Images_data, Labels, test_size=0.2, shuffle=True)
+
+X_train.shape[1:]
 
 # making one hot encodding
 Y_train = to_categorical(Y_train)
-Y_test = to_categorical(Y_test)
+Y_val = to_categorical(Y_val)
 
 
+# Creating the Model Architecture
+model = Sequential()
+
+model.add(Conv2D(filters=128, kernel_size=(7, 7), activation='relu', input_shape=X_train.shape[1:]))
+model.add(MaxPool2D((2, 2)))
+
+model.add(Conv2D(filters=64, kernel_size=(5, 5), activation='relu'))
+model.add(MaxPool2D(2, 2))
+
+model.add(Conv2D(filters=32, kernel_size=(3, 3), activation='relu'))
+model.add(MaxPool2D((2, 2)))
 
 
+model.add(Flatten())
+model.add(Dense(128, activation='relu'))
+model.add(Dense(43, activation='softmax'))
 
+
+model.compile(optimizer='Adam', loss='categorical_crossentropy', metrics=['accuracy'])
+model.summary()
+
+model.fit(X_train, Y_train, batch_size=64, epochs=10, validation_data=(X_val, Y_val), verbose=2)
+
+
+# plotting the model
+Evaluation = pd.DataFrame(model.history.history)
+Evaluation[['accuracy', 'val_accuracy']].plot()
+Evaluation[['loss', 'val_loss']].plot()
 
 
 
