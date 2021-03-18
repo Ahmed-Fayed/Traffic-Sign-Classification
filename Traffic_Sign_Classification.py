@@ -15,6 +15,7 @@ import cv2
 import os
 
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, confusion_matrix, mean_squared_error, f1_score, roc_auc_score, roc_curve
 # from sklearn.preprocessing import StandardScaler
 
 from keras.utils import to_categorical
@@ -120,6 +121,52 @@ model.fit(X_train, Y_train, batch_size=64, epochs=10, validation_data=(X_val, Y_
 Evaluation = pd.DataFrame(model.history.history)
 Evaluation[['accuracy', 'val_accuracy']].plot()
 Evaluation[['loss', 'val_loss']].plot()
+
+
+
+# Reading and Resizing test data
+test_path = 'E:/Software/Practise Projects/Traffic Sign Classification/Test/'
+test_images = []
+
+for img_name in os.listdir(test_path):
+    img_path = os.path.join(test_path, img_name)
+    img = cv2.imread(img_path)
+    img = cv2.resize(img, (50, 50))
+    
+    # Normalizing image
+    img = img / 255.0
+    
+    test_images.append(img)
+    
+
+test_images = np.array(test_images)
+
+
+# Labeling testing images
+
+test_labels = test['ClassId']
+test_labels = np.array(test_labels)
+
+predictions = model.predict(test_images)
+predictions_class = model.predict_classes(test_images)
+
+
+# Evaluating model with testing data
+
+accuracy_score = accuracy_score(test_labels, predictions_class)
+confusion_matrix = confusion_matrix(test_labels, predictions_class)
+mean_squared_error = mean_squared_error(test_labels, predictions_class)
+f1_score = f1_score(test_labels, predictions_class, average='micro')
+
+
+
+
+
+
+
+
+
+
 
 
 
