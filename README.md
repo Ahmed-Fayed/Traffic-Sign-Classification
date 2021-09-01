@@ -5,7 +5,7 @@ I have implemented a classifier for 43 different traffic signs in 3 different me
 
 --> Second is the Functional Model
 
---> Third is the Sequential Model
+--> Third is the Sequential Model (in master branch)
 
 # The Model Performance
 
