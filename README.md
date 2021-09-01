@@ -1,11 +1,11 @@
 # Traffic-Sign-Classification
 I have implemented a classifier for 43 different traffic signs in 3 different methodolgies:
 
-fisrt is the Sequential Model
+--> Fisrt is the Sequential Model
 
-Second is the Functional Model
+--> Second is the Functional Model
 
-Third is the Subclassing Model which uses python class to build models or submodels and inherting from keras Model Module
+-->  Third is the Subclassing Model which uses python class to build models or submodels and inherting from keras Model Module
 
 # The Model Performance
 
